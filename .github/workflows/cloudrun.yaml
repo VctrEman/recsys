@@ -12,21 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+name: Build using Cloud Build
+
 on:
   push:
     branches:
-    - example
+    - 'main'
 
-name: Build and Deploy to Cloud Run
 env:
-  PROJECT_ID: ${{ secrets.GCP_PROJECT }}
+  PROJECT_ID: ${{ secrets.RUN_PROJECT }}
   SERVICE: mov-recsys
   REGION: us-central1
-  BASIC_AUTH_USERNAME_ARG: ${{ secrets.BASIC_AUTH_USERNAME_ARG }}
-  BASIC_AUTH_PASSWORD_ARG: ${{ secrets.BASIC_AUTH_USERNAME_ARG }}
+  BASIC_AUTH_USERNAME: ${{ secrets.BASIC_AUTH_USERNAME }}
+  BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
 
-jobs:          #set up build and deploy
-  deploy:
+
+jobs:
+  setup-build-deploy:
+    name: Setup, Build, and Deploy
     runs-on: ubuntu-latest
 
     # Add "id-token" with the intended permissions.
@@ -39,18 +42,18 @@ jobs:          #set up build and deploy
       uses: actions/checkout@v3
 
     # Configure Workload Identity Federation and generate an access token.
-    #- id: 'auth'
-    #  name: 'Authenticate to Google Cloud'
-    #  uses: 'google-github-actions/auth@v0'
-    #  with:
-    #    workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-    #    service_account: 'my-service-account@my-project.iam.gserviceaccount.com'
+   # - id: 'auth'
+   #   name: 'Authenticate to Google Cloud'
+   #   uses: 'google-github-actions/auth@v0'
+   #   with:
+   #     workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+   #     service_account: 'my-service-account@my-project.iam.gserviceaccount.com'
 
     # Alternative option - authentication via credentials json
-     - id: 'auth'
-       uses: 'google-github-actions/auth@v0'
-       with:
-         credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v0'
+      with:
+        credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
 
     # Setup gcloud CLI
     - name: Set up Cloud SDK
