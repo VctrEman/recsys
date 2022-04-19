@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 from flask_basicauth import BasicAuth
 import pickle
 import os
@@ -19,7 +19,7 @@ MovieDataset.reset_index(inplace=True)
 @app.route('/')
 def home(): 
     return """Type a movie that you like and you may also like the following list of movies
-              \n\ntype: /movie"""
+              type: /movie"""
 
 @app.route('/<movie_name>' ,methods=['GET'])
 @basic_auth.required         #OAUTH SCREEN
