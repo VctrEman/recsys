@@ -25,7 +25,8 @@ env:
   BASIC_AUTH_USERNAME_ARG: ${{ secrets.BASIC_AUTH_USERNAME_ARG }}
   BASIC_AUTH_PASSWORD_ARG: ${{ secrets.BASIC_AUTH_USERNAME_ARG }}
 
-jobs:          #set up build and deploy
+jobs:          
+#set up build and deploy
   deploy:
     runs-on: ubuntu-latest
 
