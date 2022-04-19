@@ -14,7 +14,7 @@ modelo = pickle.load(open('models/knn_model.sav','rb'))
 movies = pd.read_pickle("data/processed/movies.pkl")
 MovieDataset = pd.read_pickle("data/processed/FinalMoviesDataset.pkl")
 csr_data = csr_matrix(MovieDataset.values)
-MovieDataset.reset_index(inplace=True)
+#MovieDataset.reset_index(inplace=True)
 
 @app.route('/')
 def home(): 
