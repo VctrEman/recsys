@@ -6,9 +6,9 @@ import pandas as pd
 from scipy.sparse import csr_matrix
 
 app = Flask(__name__)
-#app.config['BASIC_AUTH_USERNAME'] = os.environ.get('BASIC_AUTH_USERNAME')
-#app.config['BASIC_AUTH_PASSWORD'] = os.environ.get('BASIC_AUTH_PASSWORD')
-#basic_auth = BasicAuth(app)
+app.config['BASIC_AUTH_USERNAME'] = os.environ.get('BASIC_AUTH_USERNAME')
+app.config['BASIC_AUTH_PASSWORD'] = os.environ.get('BASIC_AUTH_PASSWORD')
+basic_auth = BasicAuth(app)
 
 modelo = pickle.load(open('models/knn_model.sav','rb'))
 movies = pd.read_pickle("data/processed/movies.pkl")
@@ -18,11 +18,11 @@ MovieDataset.reset_index(inplace=True)
 
 @app.route('/')
 def home(): 
-    return """App for movie recommention\n
-                    If you liked this movie, you may also like the following movies
-                    to enter a movie type: /movie"""
+    return """Type a movie that you like and you may also like the following list of movies
+              \n\ntype: /movie"""
 
 @app.route('/<movie_name>' ,methods=['GET'])
+@basic_auth.required         #OAUTH SCREEN
 def get_movie_recommendation(movie_name,):
     n_movies_to_reccomend = 10
     movie_list = movies[movies['title'].str.contains(movie_name)]
