@@ -15,7 +15,7 @@ jobs:
         env:
           IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}
           PROJECT_ID: ${{ secrets.GCP_PROJECT }}
-          SERVICE: ml-api
+          SERVICE: ${{ secrets.GCP_APP_NAME }}
           REGION: us-central1
           BASIC_AUTH_USERNAME: ${{ secrets.BASIC_AUTH_USERNAME }}
           BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
