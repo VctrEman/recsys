@@ -11,6 +11,7 @@ jobs:
         runs-on: ubuntu-latest
         env:
           IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}
+          
         steps:
         
         - name: Login
@@ -21,7 +22,7 @@ jobs:
             service_account_key: ${{ secrets.GCP_CREDENTIALS }}
         
         - name: super echo
-          run: echo "The selected color is ${{ env.IMAGE_NAME }}"
+          run: echo "The selected color is ${{ secrets.GCP_PROJECT_ID }}"
             
         - name: Configure Docker
           run: gcloud auth configure-docker --quiet
