@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "mlops-alura-346601",
+  "private_key_id": "5701195fd2ec11517d4536f59d835bfb39966106",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDzWPdyGDTHGmBh\nJRk7WYEc6SlTklqXtsptVaKaRS9rMk1ZE0svvsGSVqYZzEIPPqjxrtyjibhVb8Kg\nrx4P/wNVhv1SG+zL2BUW5MecSyjmw521cbhJ/nqozQeYEZdwMRCULfYqo0+VNTg9\nB6ZnH6VsJK2axBlDlOEWXNnlXl/UvKwt/3kG0xKaZSVUKwAZ/4I2ONI7J5U9GJph\nyb4LrrtKWdHLu8s929ObiHQEW3dQHak/pXU7CW1ms9+zwGmnq8uLO6uJ9k1EEKAQ\nr2ok/OJbOsz4DHTEd/CE8yaqtW5+kdbnO1gqYQGue7B+3PVNet0hfvcSvS/Ho/AX\n77K2SOtjAgMBAAECggEAE9OGSY3uUuBzxMZsgVjf+5aFjvEIH389i93jwxTq8Z1m\nDuFTCV9NzxnvK3/oS+yrgBFimZJhadiSr1vFI8F/qIq4feWXi94djcFy/+lhujdq\n1Hsg7CpnHPSjb0DTqUjeFGyQN1YZ6EqvO82xQYqjBCYS3N6oPkjVc+h5ukXPofna\nksNETRKRTyblz63fv7hKtuaq79qV428DgwY0CzU6FR6okteSBT/ulQ4pJHThPGJR\nG+brGrbMIY6WQTPK4sP2AfpYEIf18NIoFbuckUSeu/XgTfKKzenRS5HMd+5854HC\n8lL9TZx/JRbkydm/bG0EQz2SQUwKC9tMAVx2EUgl3QKBgQD8zWqs8b8N9v1gcbrx\nXxr48+eVzsuVbQ+YILMe/o0RziyBBIgmeLR55ynxMX5n7Zg+PlLRkX6lAxKhljzh\nvfgm8PM5yURxoqrQvfl3ePWGojueAn43NGO8OQvZqG+psxxLER5g4gu50lk/miF9\n/TvV7f36szGlLEgnxFTniwlZnwKBgQD2bO9D+bVJC29k3zFNMoMwGM2QZauHFlnA\nBFsz5kJrEY+LcDMNCMIA75Gur/V0ZDJat6270eqJFdpzFIWcvfWsa6n8S2Ws5R1e\nwSpkERAbqjNbv3UhIkGMwndGyfzaWJmaT8BnIeQkqho/kh8/4ZfP+w6dQezaOUuh\nv2K500ifvQKBgQDoNS81aGDbzPF0M0NKDtfRsQgZ3Pe3a5QVYoPlhl/B6SWL5MPC\nwsDT8HfgKlw3zlA3bDvab9BqdeYZMsz9deeIrW5ct/j8gDRyxO1uxlaQslgcjaGt\nx5uM+sFdzo+yyujEMxc6Wqf2qbZ863C0L3VUzeSq8Qo68+/bR0XN4TJXdQKBgEt9\n0crEO8o1y5leWq8ok1Hvt0HOM779lN8jNoFuv9gnGA+CftE2ZqB8w+d9Fjfi3h42\neO26AByg6jwpBEmhVBrPHNMikfJmehnmGUNwiru+517rB0nwQZ6KkJnKFUEatWu1\nlN7DXi3xQntJG3Ope6WGZtK8OIAd31Kc2/TLiksNAoGBAM3U2tCKMn15vDKqejKY\n14vdJBqX4LY9bZA5nXiK+2SdtuR1WLoHYkki+ABed6IchkG0+FbGcD/YLcxiwHDk\nGAYcWp/2hIT83dPzhQRjv2wo7z95Og8nttmar4bRwC1qsD4kIISapqVPffuKi6tM\n2G+m5XlEIl9HlVnplfe7XIob\n-----END PRIVATE KEY-----\n",
+  "client_email": "gitserviceaccount@mlops-alura-346601.iam.gserviceaccount.com",
+  "client_id": "104618846339429237746",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/gitserviceaccount%40mlops-alura-346601.iam.gserviceaccount.com"
+}
