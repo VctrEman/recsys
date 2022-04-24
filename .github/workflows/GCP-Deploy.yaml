@@ -39,7 +39,7 @@ jobs:
       uses: actions/checkout@v3
     - shell: 'bash'
       run: |-
-        echo '${{ secrets.gcp_credentials }}' | wc -c
+        echo '${{ secrets.GCP_CREDENTIALS }}' | wc -c
 
     # Alternative option - authentication via credentials json
     - id: 'auth'
