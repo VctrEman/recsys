@@ -12,65 +12,45 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Build using Cloud Build
+#Created on 24/04/2022 mermao
+
+name: Docker
 
 on:
   push:
-    branches:
-    - 'main'
-
-env:
-  PROJECT_ID: ${{ secrets.RUN_PROJECT }}
-  SERVICE: mov-recsys
-  REGION: us-central1
-  BASIC_AUTH_USERNAME: ${{ secrets.BASIC_AUTH_USERNAME }}
-  BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
-
+    branches: [ master ]
 
 jobs:
-  setup-build-deploy:
-    name: Setup, Build, and Deploy
-    runs-on: ubuntu-latest
 
-    # Add "id-token" with the intended permissions.
-    permissions:
-      contents: 'read'
-      id-token: 'write'
+    deploy:
 
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+        name: Setup Gcloud Account
+        runs-on: ubuntu-latest
+        env:
+          IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}
+        steps:
 
-    # Configure Workload Identity Federation and generate an access token.
-   # - id: 'auth'
-   #   name: 'Authenticate to Google Cloud'
-   #   uses: 'google-github-actions/auth@v0'
-   #   with:
-   #     workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-   #     service_account: 'my-service-account@my-project.iam.gserviceaccount.com'
+        - name: Login
+          uses: google-github-actions/setup-gcloud@v0
+          with:
+            project_id: ${{ secrets.GCP_PROJECT_ID }}
+            service_account_email: ${{ secrets.GCP_EMAIL }}
+            service_account_key: ${{ secrets.GCP_CREDENTIALS }}
 
-    # Alternative option - authentication via credentials json
-    - id: 'auth'
-      uses: 'google-github-actions/auth@v0'
-      with:
-        credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+        - name: Configure Docker
+          run: gcloud auth configure-docker --quiet
 
-    # Setup gcloud CLI
-    - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@v0
+        - name: Checkout repository
+          uses: actions/checkout@v2
 
-    - name: Authorize Docker push
-      run: gcloud auth configure-docker
+        - name: Build Docker image
+          run: docker build . -t $IMAGE_NAME
 
-    - name: Build and Push Container
-      run: |-
-        docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} --build-arg BASIC_AUTH_USERNAME_ARG=${{ secrets.BASIC_AUTH_USERNAME }} --build-arg BASIC_AUTH_PASSWORD_ARG=${{ secrets.BASIC_AUTH_PASSWORD }} .
-        docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }}
-        
-    - name: Deploy to Cloud Run
-      run: |-
-        gcloud run deploy ${{ env.SERVICE }} \
-          --region ${{ env.REGION }} \
-          --image gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} \
-          --platform "managed" \
-          --port 5000
+        - name: Test Docker image
+          run: docker run $IMAGE_NAME sh -c "go test -v"
+
+        - name: Push Docker image
+          run: docker push $IMAGE_NAME
+
+        - name: Deploy Docker image
+          run: gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image $IMAGE_NAME --region us-central1 --platform managed
