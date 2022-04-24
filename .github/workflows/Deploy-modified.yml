@@ -3,11 +3,8 @@ name: Docker
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
 jobs:
-
     deploy:
       
         name: Setup Gcloud Account
@@ -22,6 +19,9 @@ jobs:
             project_id: ${{ secrets.GCP_PROJECT_ID }}
             service_account_email: ${{ secrets.GCP_EMAIL }}
             service_account_key: ${{ secrets.GCP_CREDENTIALS }}
+        
+        - name: super echo
+          run: echo "The selected color is ${{ env.IMAGE_NAME }}"
             
         - name: Configure Docker
           run: gcloud auth configure-docker --quiet
