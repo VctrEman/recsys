@@ -12,58 +12,42 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+name: cloudrun-deploy
 on:
   push:
     branches:
-    - master
-
-name: Build and Deploy to Cloud Run
-env:
-  PROJECT_ID: ${{ secrets.GCP_PROJECT }}
-  SERVICE: ${{ secrets.GCP_APP_NAME }}
-  REGION: us-central1
-  BASIC_AUTH_USERNAME: ${{ secrets.BASIC_AUTH_USERNAME }}
-  BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
-
+      - master
 jobs:
-  deploy:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
-
-    # Add "id-token" with the intended permissions.
-    permissions:
-      contents: 'read'
-      id-token: 'write'
-#
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-    - shell: 'bash'
-      run: |-
-        echo '${{ secrets.GCP_CREDENTIALS }}' | wc -c
-
-    # Alternative option - authentication via credentials json
-    - id: 'auth'
-      name: 'Authenticate to Google Cloud'
-      uses: 'google-github-actions/auth@v0'
-      with:
-        credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+      uses: actions/checkout@master
 
     # Setup gcloud CLI
-    - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@v0
-
-    - name: Authorize Docker push
-      run: gcloud auth configure-docker
-
-    - name: Build and Push Container
-      run: |-
-        docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} --build-arg BASIC_AUTH_USERNAME_ARG=${{ secrets.BASIC_AUTH_USERNAME }} --build-arg BASIC_AUTH_PASSWORD_ARG=${{ secrets.BASIC_AUTH_PASSWORD }} .
-        docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }}
-        
-    - name: Deploy to Cloud Run
-      run: |-
-        gcloud run deploy ${{ env.SERVICE }} \
-          --region ${{ env.REGION }} \
-          --image gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} \
-          --platform "managed" \
-          --port 5000
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        service_account_email: ${{ secrets.GCP_EMAIL }}
+        service_account_key: ${{ secrets.GCP_CREDENTIALS }}
+        export_default_credentials: true
+    
+    # Configure Docker with Credentials
+    - name: Configure Docker
+      run: |
+        gcloud auth configure-docker
+      
+    # Build the Docker image
+    - name: Build & Publish
+      run: |
+        gcloud config set project ${{ secrets.GCP_PROJECT }}
+        gcloud builds submit --tag gcr.io/${{ secrets.GCP_PROJECT }}/${{ secrets.GCP_APPLICATION }}
+        gcloud config set run/region us-central1
+      
+    # Deploy the Docker image to the GKE cluster
+    - name: Deploy
+      run: |
+        gcloud run deploy ${{ secrets.GCP_APPLICATION }} --image gcr.io/${{ secrets.GCP_PROJECT }}/${{ secrets.GCP_APPLICATION }} \
+        --platform managed \
+        --allow-unauthenticated \
+        --memory 512M
