@@ -4,6 +4,8 @@ on:
   push:
     branches: [ master ]
 
+
+
 jobs:
 
     deploy:
@@ -11,21 +13,20 @@ jobs:
         name: Deploy
         runs-on: ubuntu-latest
         env:
-          PROJECT_ID: mlops-alura-346601
-          SERVICE: mov-recsys
-          REGION: us-central1
-          GCP_EMAIL: gitserviceaccount@mlops-alura-346601.iam.gserviceaccount.com
-          IMAGE_NAME: gcr.io/mlops-alura-346601/mov-recsys  #modified***
-          BASIC_AUTH_USERNAME: "teste"
-          BASIC_AUTH_PASSWORD: "1234"
+          IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}
+        PROJECT_ID: ${{ secrets.GCP_PROJECT }}
+        SERVICE: ml-api
+        REGION: us-central1
+        BASIC_AUTH_USERNAME: ${{ secrets.BASIC_AUTH_USERNAME }}
+        BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
 
         steps:
         
         - name: Login
           uses: google-github-actions/setup-gcloud@v0
           with:
-            project_id: $PROJECT_ID
-            service_account_email: $GCP_EMAIL
+            project_id: ${{ secrets.GCP_PROJECT_ID }}
+            service_account_email: ${{ secrets.GCP_EMAIL }}
             service_account_key: ${{ secrets.GCP_CREDENTIALS }}
             
         - name: Configure Docker
@@ -35,7 +36,7 @@ jobs:
           uses: actions/checkout@v2
 
         - name: Build Docker image
-          run: docker build -t $IMAGE_NAME --build-arg BASIC_AUTH_USERNAME_ARG=${{ secrets.BASIC_AUTH_USERNAME }} --build-arg BASIC_AUTH_PASSWORD_ARG=${{ secrets.BASIC_AUTH_PASSWORD }} .
+          run: docker build . -t $IMAGE_NAME 
 
         - name: Test Docker image
           run: docker run $IMAGE_NAME sh -c "go test -v" 
@@ -44,4 +45,4 @@ jobs:
           run: docker push $IMAGE_NAME
 
         - name: Deploy Docker image
-          run: gcloud run deploy $PROJECT_ID --image $IMAGE_NAME --region us-central1 --platform managed
+          run: gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image $IMAGE_NAME --region us-central1 --platform managed
