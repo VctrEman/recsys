@@ -27,14 +27,16 @@ jobs:
         - name: Checkout repository
           uses: actions/checkout@v2
 
-        - name: Build Docker image
-          run: docker build . --tag $IMAGE_NAME 
 
-        - name: Test Docker image
-          run: docker run $IMAGE_NAME sh -c "go test -v" 
-
-        - name: Push Docker image
-          run: docker push $IMAGE_NAME
-
-        - name: Deploy Docker image
-          run: gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image $IMAGE_NAME --region us-central1 --platform managed --allow-unauthenticated
+        - name: Build and Push Container
+          run: |-
+            docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} --build-arg BASIC_AUTH_USERNAME_ARG=${{ secrets.BASIC_AUTH_USERNAME }} --build-arg BASIC_AUTH_PASSWORD_ARG=${{ secrets.BASIC_AUTH_PASSWORD }} .
+            docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }}
+            
+        - name: Deploy to Cloud Run
+          run: |-
+            gcloud run deploy ${{ env.SERVICE }} \
+              --region ${{ env.REGION }} \
+              --image gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} \
+              --platform "managed" \
+              --port 5000
