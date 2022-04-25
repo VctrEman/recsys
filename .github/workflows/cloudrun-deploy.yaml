@@ -20,7 +20,7 @@ on:
 name: Build and Deploy to Cloud Run
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT }}
-  SERVICE: ml-api
+  SERVICE: mov-recsys
   REGION: us-central1
   BASIC_AUTH_USERNAME: ${{ secrets.BASIC_AUTH_USERNAME }}
   BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
@@ -29,7 +29,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: project-secrets
-    
+
     # Add "id-token" with the intended permissions.
     permissions:
       contents: 'read'
