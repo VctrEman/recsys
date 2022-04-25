@@ -1,3 +1,5 @@
+#do primeiro artigo do medium
+
 name: Docker
 
 on:
@@ -34,7 +36,7 @@ jobs:
           uses: actions/checkout@v2
 
         - name: Build Docker image
-          run: docker build . -t $IMAGE_NAME 
+          run: docker build -t $IMAGE_NAME --build-arg BASIC_AUTH_USERNAME_ARG=${{ secrets.BASIC_AUTH_USERNAME }} --build-arg BASIC_AUTH_PASSWORD_ARG=${{ secrets.BASIC_AUTH_PASSWORD }} .
 
         - name: Test Docker image
           run: docker run $IMAGE_NAME sh -c "go test -v" 
