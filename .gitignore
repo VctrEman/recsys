@@ -7,9 +7,12 @@ __pycache__/
 *.pkl
 
 # exclude data from source control by default
-/data/
+#data/
 
 /key.json
+git add .
+git commit -m "ativando pipeline"
+git push origin master
 
 # Distribution / packaging
 .Python
