@@ -18,6 +18,12 @@ jobs:
 
           
         steps:
+
+        - if: ${{ env.GCP_PROJECT_ID != '' }}
+          run: echo 'This step will only run if the secret has a value set.'
+        
+        - if: ${{ env.GCP_PROJECT_ID == '' }}
+          run: echo 'This step will only run if the secret does not have a value set.'
         
         - name: Login
           uses: google-github-actions/setup-gcloud@v0

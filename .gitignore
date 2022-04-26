@@ -4,10 +4,18 @@ __pycache__/
 
 # C extensions
 *.so
+*.pkl
+
+# exclude data from source control by default
+./data/
+/data/
+
+/key.json
 
 # Distribution / packaging
 .Python
 env/
+data/
 build/
 develop-eggs/
 dist/
@@ -74,9 +82,6 @@ target/
 
 # Jupyter NB Checkpoints
 .ipynb_checkpoints/
-
-# exclude data from source control by default
-/data/
 
 # Mac OS-specific storage files
 .DS_Store
