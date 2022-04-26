@@ -15,14 +15,13 @@ jobs:
         env:
           IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-
-          
+     
         steps:
 
         - if: ${{ env.GCP_PROJECT_ID != '' }}
           run: echo 'This step will only run if the secret has a value set.'
         
-        - if: ${{ env.GCP_PROJECT_ID == '' }}
+        - if: ${{ secrets.BASIC_AUTH_USERNAME == '' }}
           run: echo 'This step will only run if the secret does not have a value set.'
         
         - name: Login
@@ -45,7 +44,12 @@ jobs:
           run: docker build -t $IMAGE_NAME --build-arg BASIC_AUTH_USERNAME_ARG=${{ secrets.BASIC_AUTH_USERNAME }} --build-arg BASIC_AUTH_PASSWORD_ARG=${{ secrets.BASIC_AUTH_PASSWORD }} .
 
         - name: Push Docker image
-          run: docker push $IMAGE_NAME
+          run: docker push $IMAGE_NAME:${{  github.sha }}
 
         - name: Deploy Docker image
-          run: gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image $IMAGE_NAME --region us-central1 --platform managed
+          run: |-
+            gcloud run deploy ${{ env.SERVICE }} \
+              --region ${{ env.REGION }} \
+              --image gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} \
+              --platform "managed" \
+              --port 5000
