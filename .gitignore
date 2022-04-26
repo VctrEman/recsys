@@ -7,7 +7,6 @@ __pycache__/
 *.pkl
 
 # exclude data from source control by default
-./data/
 /data/
 
 /key.json
@@ -15,7 +14,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
-data/
+#data/       
 build/
 develop-eggs/
 dist/
