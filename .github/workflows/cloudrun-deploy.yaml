@@ -24,7 +24,7 @@ env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT }}
   SERVICE: mov-recsys
   REGION: us-central1
-  BASIC_AUTH_USERNAME: "teste" #${{ secrets.BASIC_AUTH_USERNAME }}
+  BASIC_AUTH_USERNAME: ${{ secrets.BASIC_AUTH_USERNAME }}
   BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
   GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
 
@@ -48,6 +48,9 @@ jobs:
 
     - if: ${{ env.BASIC_AUTH_USERNAME != '' }}
       run: echo 'This step will only run if env.BASIC_AUTH_USERNAME has a value set.'
+    
+    - if: ${{ env.BASIC_AUTH_PASSWORD != '' }}
+      run: echo 'This step will only run if env.BASIC_AUTH_PASSWORD has a value set.'
 
     - name: Checkout
       uses: actions/checkout@v2
