@@ -42,8 +42,6 @@ jobs:
       # This command is just an example to show your secret being printed
       # Ensure you remove any print statements of your secrets. GitHub does
       # not hide secrets that use this workaround.
-    - name: Test printing your secret (Remove this step in production)
-        run: cat $HOME/secrets/my_secret.json
 
     - if: ${{ env.PROJECT_ID != '' }}
       run: echo 'This step will only run if env.PROJECT_ID has a value set.'
