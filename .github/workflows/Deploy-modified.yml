@@ -35,7 +35,7 @@ jobs:
           with:
           #  project_id: ${{ secrets.GCP_PROJECT_ID }}
           #  service_account_email: ${{ secrets.GCP_EMAIL }}
-            service_account_key: ${{ secrets.GCP_CREDENTIALS }}
+            credentials_json: ${{ secrets.GCP_CREDENTIALS }}
         
         - name: super echo
           run: echo "The selected color is ${{ secrets.GCP_PROJECT_ID }}"
