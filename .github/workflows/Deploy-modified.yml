@@ -17,14 +17,18 @@ jobs:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
           BASIC_AUTH_USERNAME: ${{ secrets.BASIC_AUTH_USERNAME }}
           BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
+          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
      
         steps:
 
-        - if: ${{ env.GCP_PROJECT_ID != '' }}
+        - if: ${{ env.PROJECT_ID != '' }}
+          run: echo 'This step will only run if the env PROJECT_ID has a value set.'
+
+        - if: ${{ env.GCP_CREDENTIALS != '' }}
           run: echo 'This step will only run if the secret has a value set.'
-        
-        - if: ${{ env.BASIC_AUTH_USERNAME == '' }}
-          run: echo 'This step will only run if the secret does not have a value set.'
+
+        - if: ${{ env.BASIC_AUTH_USERNAME != '' }}
+          run: echo 'This step will only run if the secret has a value set.'
         
         - name: Login
           uses: google-github-actions/setup-gcloud@v0
