@@ -41,13 +41,13 @@ jobs:
     steps:
 
     - if: ${{ env.PROJECT_ID != '' }}
-      run: echo 'This step will only run if the env PROJECT_ID has a value set.'
+      run: echo 'This step will only run if env.PROJECT_ID has a value set.'
 
     - if: ${{ env.GCP_CREDENTIALS != '' }}
-      run: echo 'This step will only run if the secret has a value set.'
+      run: echo 'This step will only run if env.GCP_CREDENTIALS has a value set.'
 
     - if: ${{ env.BASIC_AUTH_USERNAME != '' }}
-      run: echo 'This step will only run if the secret has a value set.'
+      run: echo 'This step will only run if env.BASIC_AUTH_USERNAME has a value set.'
 
     - name: Checkout
       uses: actions/checkout@v2
