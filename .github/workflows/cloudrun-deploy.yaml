@@ -26,6 +26,7 @@ env:
   REGION: us-central1
   BASIC_AUTH_USERNAME: ${{ secrets.BASIC_AUTH_USERNAME }}
   BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
+  GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
 
 jobs:
   deploy:
@@ -41,12 +42,12 @@ jobs:
 
     - if: ${{ env.PROJECT_ID != '' }}
       run: echo 'This step will only run if the env PROJECT_ID has a value set.'
-    
-    - if: ${{ env.BASIC_AUTH_USERNAME == '' }}
-      run: echo 'This step will only run if the env. secret does not have a value set.'
 
-    - if: ${{ secrets.BASIC_AUTH_PASSWORD == '' }}
-      run: echo 'This step will only run if the secret does not have a value set.'
+    - if: ${{ env.GCP_CREDENTIALS != '' }}
+      run: echo 'This step will only run if the secret has a value set.'
+
+    - if: ${{ env.BASIC_AUTH_USERNAME != '' }}
+      run: echo 'This step will only run if the secret has a value set.'
 
     - name: Checkout
       uses: actions/checkout@v2
